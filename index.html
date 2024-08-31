@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+
+            <h2> <img src="icon.png.png">To Do List</h2>
+            <input type="text" placeholder="Write here..." id="inputBx">
+            <ul id="list"></ul>
+        </div>
+    </div>
+    <script>
+        let inputBx = document.querySelector('#inputBx');
+        let list = document.querySelector('#list');
+
+        inputBx.addEventListener("keyup", function(event) {
+            if (event.key === "Enter" && this.value.trim() !== "") {
+                addItem(this.value.trim());
+                this.value = "";
+            }
+        });
+
+        function addItem(inputText) {
+            let lisItem = document.createElement("li");
+            lisItem.innerHTML = `
+                <span class="checkBtn">&#x100CB;</span> <!-- Empty circle initially -->
+                <span class="text">${inputText}</span>
+                <i class="deleteBtn">x</i>
+            `;
+
+            // Add 'done' toggle functionality
+            let checkBtn = lisItem.querySelector(".checkBtn");
+            checkBtn.addEventListener("click", function() {
+                lisItem.classList.toggle('done');
+                if (lisItem.classList.contains('done')) {
+                    this.innerHTML = '&#10003;'; // Check mark
+                } else {
+                    this.innerHTML = '&#x100CB;'; // Empty circle
+                }
+            });
+
+            // Delete button functionality
+            let deleteIcon = lisItem.querySelector(".deleteBtn");
+            deleteIcon.addEventListener("click", function(event) {
+                event.stopPropagation();  // Prevent triggering the 'done' toggle
+                lisItem.remove();
+            });
+
+            list.appendChild(lisItem);
+        }
+    </script>
+</body>
+</html>
